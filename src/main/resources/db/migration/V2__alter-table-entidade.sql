@@ -1,0 +1,1 @@
+alter table entidade alter telefone type varchar(15);
