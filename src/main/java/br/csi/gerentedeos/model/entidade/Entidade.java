@@ -1,7 +1,7 @@
 package br.csi.gerentedeos.model.entidade;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
+import jakarta.validation.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,17 +10,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
-@Table(name = "entidade")
+@Table(name = "entidade", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "nome"),
+        @UniqueConstraint(columnNames = "cpf"),
+        @UniqueConstraint(columnNames = "cnpj"),
+        @UniqueConstraint(columnNames = "email")
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Entidade {
+    @Check(constraints = "id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
@@ -33,7 +40,7 @@ public class Entidade {
     private String ie;
     @Email(message = "E-mail inválido")
     private String email;
-    @Pattern(regexp = "([(][0-9]{2}[) ]?[0-9]{5}-[0-9]{4})|([(][0-9]{2}[) ]?[0-9]{4}-[0-9]{4})|([0-9]{10})|([0-9]{11})", message = "Número inválido")
+    @Pattern(regexp = "([(][0-9]{2}[)] [0-9]{5}-[0-9]{4})|([(][0-9]{2}[)] [0-9]{4}-[0-9]{4})|([0-9]{10})", message = "Número inválido")
     private String telefone;
     @Valid
     @Embedded
