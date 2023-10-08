@@ -35,7 +35,7 @@ public class TratadorDeErros {
 
     //Erros de validação
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity tratarErro404(){
+    public ResponseEntity<HttpStatus> tratarErro404(){
         return ResponseEntity.notFound().build();
     }
 
@@ -71,7 +71,7 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(SQLException.class)
-    public ResponseEntity tratarErro500(Exception e){
+    public ResponseEntity<String> tratarErro500(){
         return ResponseEntity.internalServerError().body("Erro no Banco de Dados");
     }
 }
