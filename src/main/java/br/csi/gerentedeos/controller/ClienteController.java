@@ -6,12 +6,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping("/cliente")
@@ -20,6 +19,16 @@ public class ClienteController {
 
     public ClienteController(ClienteService service) {
         this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> listaClientes() {
+        return ResponseEntity.ok(service.read());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> buscaCliente(@PathVariable long id) {
+        return ResponseEntity.ok(service.readById(id));
     }
 
     @PostMapping
